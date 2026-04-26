@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-# Allow your React frontend to talk to this Python backend
+
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 def get_portfolio_performance(weights, mean_returns, cov_matrix):
@@ -43,7 +43,7 @@ def optimize(tickers: str = "AAPL,MSFT,TSLA,BTC-USD"):
     opt_ret, opt_std = get_portfolio_performance(opt_weights, mean_returns, cov_matrix)
 
     # 2. VISUALIZATION DATA: Monte Carlo Simulation
-    # This generates the "Cloud of Points" for your frontend scatter plot
+    # This generates the "Cloud of Points" for frontend scatter plot
     portfolios = []
     for _ in range(2000):
         w = np.random.random(num_assets)
