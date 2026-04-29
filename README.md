@@ -70,4 +70,5 @@ Modern Portfolio Theory has well-documented problems this tool inherits:
 3. **The optimizer overfits.** Markowitz optimization is famous for producing extreme allocations that look great on training data and underperform out-of-sample.
 4. **Equal-weight often beats it.** DeMiguel, Garlappi & Uppal (2009) showed that naive 1/N portfolios frequently outperform Markowitz-optimized ones after costs.
 5. **Costs and taxes are ignored.** No transaction cost or tax modeling.
-**TL;DR:** Use this to understand the math. Don't use it to pick your 401(k).
+   
+**TL;DR:** Use this to understand the math. Don't use it to pick your 401(k)...
