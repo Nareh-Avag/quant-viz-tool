@@ -2,7 +2,7 @@ import React, { useState, useMemo, memo } from 'react';
 import { ScatterChart, Scatter, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { Activity, Shield, TrendingUp, BarChart3 } from 'lucide-react';
  
-// ---------- Memoized chart ----------
+//  Memoized chart 
 // Only re-renders when its props (data) actually change.
 // Typing in the ticker input no longer touches this component.
 const FrontierChart = memo(function FrontierChart({ data }) {
@@ -50,15 +50,15 @@ const FrontierChart = memo(function FrontierChart({ data }) {
           shape="circle"
           isAnimationActive={false}
         />
-        <Scatter data={optimalPoint} fill="#34d399" isAnimationActive={false}>
-          <Cell fill="#34d399" stroke="#059669" strokeWidth={2} r={8} />
+        <Scatter data={optimalPoint} fill="#ffffff" isAnimationActive={false}>
+          <Cell fill="#ffffff" stroke="#ffffff" strokeWidth={2} r={8} />
         </Scatter>
       </ScatterChart>
     </ResponsiveContainer>
   );
 });
  
-// ---------- Memoized weights panel ----------
+//  Memoized weights panel 
 const WeightsPanel = memo(function WeightsPanel({ weights }) {
   const entries = useMemo(() => Object.entries(weights), [weights]);
   return (
@@ -81,7 +81,7 @@ const WeightsPanel = memo(function WeightsPanel({ weights }) {
   );
 });
  
-// ---------- Main App ----------
+// Main App 
 function App() {
   const [tickers, setTickers] = useState("AAPL, MSFT, TSLA, BTC-USD");
   const [data, setData] = useState(null);
