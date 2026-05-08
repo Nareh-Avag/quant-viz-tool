@@ -24,7 +24,7 @@ app = FastAPI(
 # Lock CORS to the Vite dev server. Add prod origin via env var when deploying.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origin_regex=r"http://localhost:\d+",
     allow_methods=["GET"],
     allow_headers=["*"],
 )
