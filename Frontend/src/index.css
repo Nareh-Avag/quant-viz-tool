@@ -1,1 +1,54 @@
 @import "tailwindcss";
+
+@theme {
+  --color-cream:    #F4EDE1;
+  --color-sage:     #D7E7D0;
+  --color-aqua:     #A9D7D8;
+  --color-wine:     #6B1F3A;
+  --color-plum:     #3A1025;
+  --color-charcoal: #1A1A22;
+
+  --font-sans: 'Jost', system-ui, -apple-system, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: #F4EDE1;
+  color: #1A1A22;
+  font-family: 'Jost', system-ui, sans-serif;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: 0.01em;
+}
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: #F4EDE1; }
+::-webkit-scrollbar-thumb { background: rgba(107, 31, 58, 0.25); border-radius: 2px; }
+
+:focus-visible {
+  outline: 1px solid rgba(169, 215, 216, 0.7);
+  outline-offset: 2px;
+}
+
+/* ── Animations ── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.animate-fade-up { animation: fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.animate-fade-in { animation: fade-in 0.4s ease forwards; }
+.animate-spin    { animation: spin 0.75s linear infinite; }
