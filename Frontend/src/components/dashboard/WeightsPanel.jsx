@@ -1,44 +1,42 @@
 import React, { memo, useMemo } from 'react';
+import { SegBar } from '../lcd/SegBar';
 
 const WeightsPanel = memo(function WeightsPanel({ weights }) {
   const entries = useMemo(() => Object.entries(weights), [weights]);
 
   return (
-    <div className="space-y-6">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
       {entries.map(([ticker, weight], i) => (
         <div
           key={ticker}
           className="animate-fade-up"
-          style={{ animationDelay: `${i * 60}ms`, opacity: 0 }}
+          style={{ animationDelay: `${i * 55}ms`, opacity: 0 }}
         >
-          <div className="flex justify-between items-baseline mb-2.5">
-            <span className="text-sm font-mono tracking-widest text-charcoal/60 uppercase">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 5 }}>
+            <span style={{
+              fontFamily: 'IBM Plex Mono, monospace',
+              fontSize: 10,
+              fontWeight: 500,
+              letterSpacing: '0.16em',
+              color: '#5F684D',
+              textTransform: 'uppercase',
+            }}>
               {ticker}
             </span>
-            <span className="text-sm font-mono text-wine/80 tabular-nums">
-              {(weight * 100).toFixed(2)}%
+            <span style={{
+              fontFamily: 'VT323, monospace',
+              fontSize: '1.05rem',
+              color: '#2E3323',
+              letterSpacing: '0.04em',
+            }}>
+              {(weight * 100).toFixed(1)}%
             </span>
           </div>
-          <div
-            className="w-full h-px rounded-full overflow-hidden"
-            style={{ background: 'rgba(26,26,34,0.08)' }}
-          >
-            <div
-              className="h-full transition-all duration-700 ease-out"
-              style={{
-                width: `${weight * 100}%`,
-                background: colors.aqua,
-                opacity: 0.7,
-              }}
-            />
-          </div>
+          <SegBar value={weight} height={6} />
         </div>
       ))}
     </div>
   );
 });
-
-/* inline — avoids a second import for a single value */
-const colors = { aqua: '#A9D7D8' };
 
 export default WeightsPanel;

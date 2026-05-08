@@ -1,43 +1,60 @@
 import React, { useMemo, memo } from 'react';
 import {
   ScatterChart, Scatter, XAxis, YAxis,
-  Tooltip, ResponsiveContainer,
+  Tooltip, ResponsiveContainer, CartesianGrid,
 } from 'recharts';
-import { colors, alpha } from '../../constants/theme';
+import { lcd, lcdAlpha } from '../../theme/lcd';
 
 const TooltipContent = ({ active, payload }) => {
   if (!active || !payload?.length) return null;
   const d = payload[0]?.payload;
   return (
     <div style={{
-      background:   '#FFFFFF',
-      border:       `1px solid ${alpha.charcoal(0.08)}`,
-      borderRadius: 8,
-      padding:      '10px 14px',
-      fontSize:     12,
-      fontFamily:   'Jost, sans-serif',
-      fontWeight:   300,
-      lineHeight:   1.7,
+      background: '#0A0E07',
+      border: `1px solid ${lcdAlpha(lcd.dark, 0.5)}`,
+      padding: '7px 12px',
+      fontFamily: 'IBM Plex Mono, monospace',
+      lineHeight: 1.9,
     }}>
-      <p style={{ color: alpha.charcoal(0.35), letterSpacing: '0.14em', fontSize: 10, marginBottom: 4 }}>
+      <p style={{ color: lcdAlpha(lcd.dark, 0.7), fontSize: 8, letterSpacing: '0.2em', marginBottom: 3 }}>
         PORTFOLIO
       </p>
-      <p style={{ color: colors.charcoal }}>
-        Risk&nbsp;&nbsp;&nbsp;<span style={{ color: colors.wine, fontWeight: 400 }}>{d?.x?.toFixed(2)}%</span>
+      <p style={{ color: lcdAlpha(lcd.mid, 0.9), fontSize: 10 }}>
+        RISK&nbsp;&nbsp;&nbsp;
+        <span style={{ color: '#9EAA85', fontWeight: 500 }}>{d?.x?.toFixed(2)}%</span>
       </p>
-      <p style={{ color: colors.charcoal }}>
-        Return&nbsp;<span style={{ color: colors.wine, fontWeight: 400 }}>{d?.y?.toFixed(2)}%</span>
+      <p style={{ color: lcdAlpha(lcd.mid, 0.9), fontSize: 10 }}>
+        RETURN&nbsp;
+        <span style={{ color: '#9EAA85', fontWeight: 500 }}>{d?.y?.toFixed(2)}%</span>
       </p>
     </div>
   );
 };
 
+const ScatterDot = ({ cx, cy }) => (
+  <circle cx={cx} cy={cy} r={2.2} fill={lcdAlpha(lcd.dark, 0.6)} />
+);
+
 const OptimalDot = ({ cx, cy }) => (
-  <g>
-    <circle cx={cx} cy={cy} r={14} fill="none" stroke={alpha.wine(0.12)} strokeWidth={1} />
-    <circle cx={cx} cy={cy} r={7}  fill={colors.wine} fillOpacity={0.9} />
+  <g className="animate-phosphor-pulse">
+    <circle cx={cx} cy={cy} r={22} fill="none" stroke={lcdAlpha(lcd.mid, 0.07)} strokeWidth={1} />
+    <circle cx={cx} cy={cy} r={13} fill="none" stroke={lcdAlpha(lcd.mid, 0.14)} strokeWidth={1} />
+    <circle cx={cx} cy={cy} r={6}  fill="none" stroke={lcdAlpha(lcd.bg,  0.35)} strokeWidth={1} />
+    <circle cx={cx} cy={cy} r={3.5}
+      fill={lcd.bg}
+      style={{ filter: 'drop-shadow(0 0 5px rgba(200,230,160,0.9)) drop-shadow(0 0 12px rgba(200,230,160,0.4))' }}
+    />
+    <circle cx={cx} cy={cy} r={1.2} fill="white" opacity={0.9} />
   </g>
 );
+
+const tickStyle = {
+  fill: lcdAlpha(lcd.dark, 0.75),
+  fontSize: 9,
+  fontFamily: 'IBM Plex Mono, monospace',
+  fontWeight: 400,
+  letterSpacing: '0.05em',
+};
 
 const FrontierChart = memo(function FrontierChart({ data }) {
   const optimalPoint = useMemo(
@@ -45,33 +62,39 @@ const FrontierChart = memo(function FrontierChart({ data }) {
     [data.optimal.risk, data.optimal.expected_return]
   );
 
-  const tickStyle = {
-    fill:        alpha.charcoal(0.35),
-    fontSize:    11,
-    fontFamily:  'Jost, sans-serif',
-    fontWeight:  300,
-    letterSpacing: '0.04em',
-  };
-
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <ScatterChart margin={{ top: 16, right: 16, bottom: 16, left: 4 }}>
+      <ScatterChart margin={{ top: 14, right: 14, bottom: 10, left: 0 }}>
+        <CartesianGrid
+          strokeDasharray="1 4"
+          stroke={lcdAlpha(lcd.deep, 0.3)}
+          strokeWidth={0.5}
+        />
         <XAxis
           type="number" dataKey="x" name="Volatility" unit="%"
           tick={tickStyle} tickLine={false}
-          axisLine={{ stroke: alpha.charcoal(0.08) }}
+          axisLine={{ stroke: lcdAlpha(lcd.dark, 0.3), strokeWidth: 0.5 }}
         />
         <YAxis
           type="number" dataKey="y" name="Return" unit="%"
           tick={tickStyle} tickLine={false}
-          axisLine={{ stroke: alpha.charcoal(0.08) }}
+          axisLine={{ stroke: lcdAlpha(lcd.dark, 0.3), strokeWidth: 0.5 }}
+          width={38}
         />
         <Tooltip
           content={<TooltipContent />}
-          cursor={{ stroke: alpha.charcoal(0.1), strokeDasharray: '4 4' }}
+          cursor={{ stroke: lcdAlpha(lcd.dark, 0.25), strokeDasharray: '3 3', strokeWidth: 0.5 }}
         />
-        <Scatter data={data.scatter} fill={colors.aqua} opacity={0.5} isAnimationActive={false} />
-        <Scatter data={optimalPoint} isAnimationActive={false} shape={<OptimalDot />} />
+        <Scatter
+          data={data.scatter}
+          shape={<ScatterDot />}
+          isAnimationActive={false}
+        />
+        <Scatter
+          data={optimalPoint}
+          shape={<OptimalDot />}
+          isAnimationActive={false}
+        />
       </ScatterChart>
     </ResponsiveContainer>
   );

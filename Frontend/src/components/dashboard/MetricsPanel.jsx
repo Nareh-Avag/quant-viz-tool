@@ -1,45 +1,66 @@
 import React, { memo } from 'react';
 
-const MetricRow = ({ label, value, unit, accent }) => (
-  <div className="py-5 border-b border-charcoal/6 last:border-0 last:pb-0 first:pt-0">
-    <p className="text-[10px] uppercase tracking-[0.2em] text-charcoal/35 font-medium mb-1.5">
-      {label}
-    </p>
-    <p className={`text-4xl font-extralight tabular-nums ${accent ? 'text-wine' : 'text-charcoal/80'}`}>
-      {value}
-      {unit && <span className="text-2xl ml-1 text-charcoal/25">{unit}</span>}
-    </p>
+const MetricRow = ({ label, value, unit, sublabel }) => (
+  <div style={{ padding: '9px 0', borderBottom: '1px solid rgba(95,104,77,0.18)' }}>
+    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3 }}>
+      <span className="lcd-label">{label}</span>
+      {sublabel && <span className="lcd-label" style={{ fontSize: 7, color: 'rgba(142,151,117,0.5)' }}>{sublabel}</span>}
+    </div>
+    <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
+      <span className="lcd-value">{value}</span>
+      {unit && (
+        <span style={{
+          fontFamily: 'IBM Plex Mono, monospace',
+          fontSize: 9,
+          color: '#8E9775',
+          letterSpacing: '0.1em',
+        }}>{unit}</span>
+      )}
+    </div>
   </div>
 );
 
-const SkeletonRow = ({ label }) => (
-  <div className="py-5 border-b border-charcoal/6 last:border-0 last:pb-0 first:pt-0">
-    <p className="text-[10px] uppercase tracking-[0.2em] text-charcoal/35 font-medium mb-1.5">{label}</p>
-    <p className="text-4xl font-extralight text-charcoal/12">—</p>
+const EmptyRow = ({ label }) => (
+  <div style={{ padding: '9px 0', borderBottom: '1px solid rgba(95,104,77,0.18)' }}>
+    <span className="lcd-label">{label}</span>
+    <div className="lcd-value" style={{ color: 'rgba(95,104,77,0.3)', marginTop: 3 }}>- -</div>
   </div>
 );
 
 const MetricsPanel = memo(function MetricsPanel({ data }) {
   return (
     <div>
-      <p className="text-[10px] uppercase tracking-[0.2em] text-charcoal/35 font-medium pb-4 border-b border-charcoal/6 mb-1">
-        Performance
-      </p>
-      <p className="text-[10px] text-charcoal/25 tracking-wide mt-3 mb-2">
-        Annualized · 1Y historical window
-      </p>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingBottom: 7,
+        marginBottom: 2,
+        borderBottom: '1px solid rgba(95,104,77,0.28)',
+      }}>
+        <span className="lcd-label">PERFORMANCE</span>
+        <span className="lcd-label" style={{ fontSize: 7, color: 'rgba(142,151,117,0.5)' }}>ANNUALIZED</span>
+      </div>
+      <span className="lcd-label" style={{ display: 'block', fontSize: 7, color: 'rgba(142,151,117,0.45)', marginBottom: 4, marginTop: 4 }}>
+        1Y HISTORICAL WINDOW
+      </span>
 
       {data ? (
         <>
-          <MetricRow label="Sharpe Ratio"    value={data.optimal.sharpe.toFixed(2)}           accent />
-          <MetricRow label="Volatility"      value={data.optimal.risk.toFixed(1)}            unit="%" />
-          <MetricRow label="Expected Return" value={data.optimal.expected_return.toFixed(1)} unit="%" accent />
+          <MetricRow label="SHARPE RATIO"    value={data.optimal.sharpe.toFixed(2)} sublabel="RISK-ADJ" />
+          <MetricRow label="VOLATILITY"      value={data.optimal.risk.toFixed(1)} unit="%" />
+          <MetricRow
+            label="EXP. RETURN"
+            value={data.optimal.expected_return.toFixed(1)}
+            unit="%"
+            sublabel="P.A."
+          />
         </>
       ) : (
         <>
-          <SkeletonRow label="Sharpe Ratio" />
-          <SkeletonRow label="Volatility" />
-          <SkeletonRow label="Expected Return" />
+          <EmptyRow label="SHARPE RATIO" />
+          <EmptyRow label="VOLATILITY" />
+          <EmptyRow label="EXP. RETURN" />
         </>
       )}
     </div>
