@@ -72,3 +72,4 @@ Modern Portfolio Theory has well-documented problems this tool inherits:
 5. **Costs and taxes are ignored.** No transaction cost or tax modeling.
    
 **TL;DR:** Use this to understand the math. Don't use it to pick your 401(k)...
+<img width="1216" height="967" alt="QV" src="https://github.com/user-attachments/assets/1a559eae-41a0-489c-b9fd-caefe9edaf73" />
